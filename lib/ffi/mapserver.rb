@@ -80,6 +80,9 @@ module FFI
       :MS_QUERY_BY_INDEX,
       :MS_QUERY_BY_FILTER
 
+    MS_REQUEST_TYPE = enum :MS_GET_REQUEST,
+      :MS_POST_REQUEST
+
     MS_SHAPE_TYPE = enum :MS_SHAPE_POINT,
       :MS_SHAPE_LINE,
       :MS_SHAPE_POLYGON,
@@ -126,6 +129,59 @@ module FFI
       layout :sys_regex, :pointer
     end
 
+    # cgiutil
+    autoload :CGIRequestObj,
+      File.expand_path('mapserver/cgiutil/cgi_request_obj', __dir__)
+
+    # fontcache
+    autoload :FaceElement,
+      File.expand_path('mapserver/fontcache/face_element', __dir__)
+    autoload :GlyphElement,
+      File.expand_path('mapserver/fontcache/glyph_element', __dir__)
+    autoload :GlyphElementKey,
+      File.expand_path('mapserver/fontcache/glyph_element_key', __dir__)
+
+    # maphash
+    autoload :HashObj,
+      File.expand_path('mapserver/maphash/hash_obj', __dir__)
+    autoload :HashTableObj,
+      File.expand_path('mapserver/maphash/hash_table_obj', __dir__)
+
+    # mapprimitive
+    autoload :GeotransformObj,
+      File.expand_path('mapserver/mapprimitive/geotransform_obj', __dir__)
+    autoload :ItemObj,
+      File.expand_path('mapserver/mapprimitive/item_obj', __dir__)
+    autoload :LineObj,
+      File.expand_path('mapserver/mapprimitive/line_obj', __dir__)
+    autoload :PointObj,
+      File.expand_path('mapserver/mapprimitive/point_obj', __dir__)
+    autoload :RectObj,
+      File.expand_path('mapserver/mapprimitive/rect_obj', __dir__)
+    autoload :ShapeObj,
+      File.expand_path('mapserver/mapprimitive/shape_obj', __dir__)
+    autoload :VectorObj,
+      File.expand_path('mapserver/mapprimitive/vector_obj', __dir__)
+
+    # mapsymbol
+    autoload :ColorObj,
+      File.expand_path('mapserver/mapsymbol/color_obj', __dir__)
+    autoload :ImageCacheObj,
+      File.expand_path('mapserver/mapsymbol/image_cache_obj', __dir__)
+    autoload :PaletteArrayObj,
+      File.expand_path('mapserver/mapsymbol/palette_array_obj', __dir__)
+    autoload :RGBAArrayObj,
+      File.expand_path('mapserver/mapsymbol/rgba_array_obj', __dir__)
+    autoload :RGBAPixel,
+      File.expand_path('mapserver/mapsymbol/rgba_pixel', __dir__)
+    autoload :RGBPixel,
+      File.expand_path('mapserver/mapsymbol/rgb_pixel', __dir__)
+    autoload :RasterBufferObj,
+      File.expand_path('mapserver/mapsymbol/raster_buffer_obj', __dir__)
+    autoload :SymbolObj,
+      File.expand_path('mapserver/mapsymbol/symbol_obj', __dir__)
+
+
     autoload :AttributeBindingObj,
       File.expand_path('mapserver/attribute_binding_obj', __dir__)
 
@@ -136,8 +192,6 @@ module FFI
       File.expand_path('mapserver/class_obj', __dir__)
     autoload :ClusterObj,
       File.expand_path('mapserver/cluster_obj', __dir__)
-    autoload :ColorObj,
-      File.expand_path('mapserver/mapsymbol/color_obj', __dir__)
 
     autoload :ExpressionObj,
       File.expand_path('mapserver/expression_obj', __dir__)
@@ -147,28 +201,15 @@ module FFI
     autoload :FontSetObj,
       File.expand_path('mapserver/font_set_obj', __dir__)
 
-    autoload :GeotransformObj,
-      File.expand_path('mapserver/mapprimitive/geotransform_obj', __dir__)
-    autoload :GlyphElement,
-      File.expand_path('mapserver/fontcache/glyph_element', __dir__)
-    autoload :GlyphElementKey,
-      File.expand_path('mapserver/fontcache/glyph_element_key', __dir__)
     autoload :GlyphObj,
-      File.expand_path('mapserver/glpyh_obj', __dir__)
+      File.expand_path('mapserver/glyph_obj', __dir__)
+    autoload :GlyphMetrics,
+      File.expand_path('mapserver/glyph_metrics', __dir__)
     autoload :GraticuleObj,
       File.expand_path('mapserver/graticule_obj', __dir__)
 
-    autoload :HashObj,
-      File.expand_path('mapserver/maphash/hash_obj', __dir__)
-    autoload :HashTableObj,
-      File.expand_path('mapserver/maphash/hash_table_obj', __dir__)
-
-    autoload :ImageCacheObj,
-      File.expand_path('mapserver/mapsymbol/image_cache_obj', __dir__)
     autoload :ImageObj,
       File.expand_path('mapserver/image_obj', __dir__)
-    autoload :ItemObj,
-      File.expand_path('mapserver/mapprimitive/item_obj', __dir__)
 
     autoload :JoinObj,
       File.expand_path('mapserver/join_obj', __dir__)
@@ -193,8 +234,6 @@ module FFI
       File.expand_path('mapserver/layer_v_table_obj', __dir__)
     autoload :LegendObj,
       File.expand_path('mapserver/legend_obj', __dir__)
-    autoload :LineObj,
-      File.expand_path('mapserver/mapprimitive/line_obj', __dir__)
 
     autoload :MapObj,
       File.expand_path('mapserver/map_obj', __dir__)
@@ -206,12 +245,8 @@ module FFI
     autoload :OriginalScaleTokenStrings,
       File.expand_path('mapserver/original_scale_token_strings', __dir__)
 
-    autoload :PaletteArrayObj,
-      File.expand_path('mapserver/mapsymbol/palette_array_obj', __dir__)
     autoload :PaletteObj,
       File.expand_path('mapserver/palette_obj', __dir__)
-    autoload :PointObj,
-      File.expand_path('mapserver/mapprimitive/point_obj', __dir__)
     autoload :ProjectionObj,
       File.expand_path('mapserver/projection_obj', __dir__)
 
@@ -220,16 +255,6 @@ module FFI
     autoload :QueryObj,
       File.expand_path('mapserver/query_obj', __dir__)
 
-    autoload :RGBAArrayObj,
-      File.expand_path('mapserver/mapsymbol/rgba_array_obj', __dir__)
-    autoload :RGBAPixel,
-      File.expand_path('mapserver/mapsymbol/rgba_pixel', __dir__)
-    autoload :RGBPixel,
-      File.expand_path('mapserver/mapsymbol/rgb_pixel', __dir__)
-    autoload :RasterBufferObj,
-      File.expand_path('mapserver/mapsymbol/raster_buffer_obj', __dir__)
-    autoload :RectObj,
-      File.expand_path('mapserver/mapprimitive/rect_obj', __dir__)
     autoload :ReferenceMapObj,
       File.expand_path('mapserver/reference_map_obj', __dir__)
     autoload :RendererVTableObj,
@@ -245,16 +270,12 @@ module FFI
       File.expand_path('mapserver/scale_token_obj', __dir__)
     autoload :ScalebarObj,
       File.expand_path('mapserver/scalebar_obj', __dir__)
-    autoload :ShapeObj,
-      File.expand_path('mapserver/mapprimitive/shape_obj', __dir__)
     autoload :SortByClause,
       File.expand_path('mapserver/sort_by_clause', __dir__)
     autoload :SortByProperties,
       File.expand_path('mapserver/sort_by_properties', __dir__)
     autoload :StyleObj,
       File.expand_path('mapserver/style_obj', __dir__)
-    autoload :SymbolObj,
-      File.expand_path('mapserver/mapsymbol/symbol_obj', __dir__)
     autoload :SymbolSetObj,
       File.expand_path('mapserver/symbol_set_obj', __dir__)
 
@@ -268,9 +289,6 @@ module FFI
       File.expand_path('mapserver/token_list_node_obj', __dir__)
     autoload :TokenValueObj,
       File.expand_path('mapserver/token_value_obj', __dir__)
-
-    autoload :VectorObj,
-      File.expand_path('mapserver/mapprimitive/vector_obj', __dir__)
 
     autoload :WebObj,
       File.expand_path('mapserver/web_obj', __dir__)
@@ -335,12 +353,67 @@ module FFI
     attach_function :intersectLabelPolygons,
       [LineObj.ptr, RectObj.ptr, LineObj.ptr, RectObj.ptr],
       :int
-    attach_function :intersectTextSymbol,
-      [TextSymbolObj.ptr, :pointer],
-     :int
+    #attach_function :intersectTextSymbol,
+    #  [TextSymbolObj.ptr, :pointer],
+    # :int
 
     attach_function :get_metrics,
-      [PointObj.ptr, :int, TextPathObj.ptr, :int, :int, :double, :int, :pointer], :int
+      [PointObj.ptr, :int, TextPathObj.ptr, :int, :int, :double, :int, :pointer],
+      :int
 
+    #attach_function :dist, [PointObj.ptr, PointObj.ptr], :double
+    attach_function :fastComputeBounds, [LineObj.ptr, RectObj.ptr], :void
+
+    #---------------------------------------------------------------------------
+    # Main API functions
+    #---------------------------------------------------------------------------
+    #~~~~~
+    # mapobject.c
+    #~~~~~
+    attach_function :msFreeMap, [MapObj.ptr], :void
+    attach_function :msNewMapObj, [], MapObj.ptr
+    attach_function :msGetConfigOption, [MapObj.ptr, :string], :string
+    attach_function :msSetConfigOption, [MapObj.ptr, :string, :string], :int
+    attach_function :msTestConfigOption,
+      [MapObj.ptr, :string, :int],
+      :int
+    attach_function :msApplyMapConfigOptions, [MapObj.ptr], :void
+    attach_function :msMapComputeGeotransform, [MapObj.ptr], :int
+    attach_function :msMapPixelToGeoref, [MapObj.ptr, :pointer, :pointer], :void
+    attach_function :msMapGeorefToPixel, [MapObj.ptr, :pointer, :pointer], :void
+    attach_function :msMapSetExtent,
+      [MapObj.ptr, :double, :double, :double, :double],
+      :int
+
+    attach_function :msMapOffsetExtent, [MapObj.ptr, :double, :double], :int
+
+    attach_function :msMapScaleExtent,
+      [MapObj.ptr, :double, :double, :double],
+      :int
+
+    attach_function :msMapSetCenter, [MapObj.ptr, PointObj.ptr], :int
+    attach_function :msMapSetRotation, [MapObj.ptr, :double], :int
+    attach_function :msMapSetSize, [MapObj.ptr, :int, :int], :int
+    attach_function :msMapSetFakedExtent, [MapObj.ptr], :int
+    attach_function :msMapRestoreRealExtent, [MapObj.ptr], :int
+    attach_function :msMapLoadOWSParameters,
+      [MapObj.ptr, CGIRequestObj.ptr, :string],
+      :int
+    attach_function :msMapIgnoreMissingData, [MapObj.ptr], :int
+
+    #~~~~~
+    # mapfile.c
+    #~~~~~
+    attach_function :msValidateParameter,
+      [:string, :string, :string, :string, :string],
+      :int
+    attach_function :msGetLayerIndex, [MapObj.ptr, :string], :int
+    attach_function :msGetSymbolIndex, [SymbolSetObj.ptr, :string, :int], :int
+    attach_function :msLoadMap, [:string, :string], MapObj.ptr
+    #attach_function :msTransformXmlMapfile, [:string, :string, :string], :int
+    attach_function :msSaveMap, [MapObj.ptr, :string], :int
+    attach_function :msFreeCharArray, [:pointer, :int], :void
   end
 end
+
+require_relative 'mapserver/cgiutil'
