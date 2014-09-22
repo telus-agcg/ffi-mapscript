@@ -14,6 +14,8 @@ module FFI
     MS_MAXCOLORS = 256
     MS_MAXVECTORPOINTS = 100
     MS_STYLE_BINDING_LENGTH = 12
+    MS_TRUE = 1
+    MS_FALSE = 0
 
     # Enums
     MS_CONNECTION_TYPE = enum :MS_INLINE,
@@ -83,6 +85,10 @@ module FFI
     MS_REQUEST_TYPE = enum :MS_GET_REQUEST,
       :MS_POST_REQUEST
 
+    MS_RETURN_VALUE = enum :MS_SUCCESS,
+      :MS_FAILURE,
+      :MS_DONE
+
     MS_SHAPE_TYPE = enum :MS_SHAPE_POINT,
       :MS_SHAPE_LINE,
       :MS_SHAPE_POLYGON,
@@ -146,6 +152,16 @@ module FFI
       File.expand_path('mapserver/maphash/hash_obj', __dir__)
     autoload :HashTableObj,
       File.expand_path('mapserver/maphash/hash_table_obj', __dir__)
+
+    # mapows
+    autoload :OWSRequestObj,
+      File.expand_path('mapserver/mapows/ows_request_obj', __dir__)
+    autoload :SOSParamsObj,
+      File.expand_path('mapserver/mapows/sos_params_obj', __dir__)
+    autoload :WFSParamsObj,
+      File.expand_path('mapserver/mapows/wfs_params_obj', __dir__)
+    autoload :WMSParamsObj,
+      File.expand_path('mapserver/mapows/wms_params_obj', __dir__)
 
     # mapprimitive
     autoload :GeotransformObj,
@@ -417,3 +433,5 @@ module FFI
 end
 
 require_relative 'mapserver/cgiutil'
+require_relative 'mapserver/mapio'
+require_relative 'mapserver/mapows'
