@@ -1,12 +1,11 @@
 require 'ffi'
-require_relative 'mapserver/version'
+require_relative 'libc/tm'
 
 module FFI
   module Mapserver
     extend FFI::Library
 
     ffi_lib 'mapserver'
-    ffi_lib 'libc'
 
     MS_LABEL_BINDING_LENGTH = 9
     MS_ENCRYPTION_KEY_SIZE = 16
@@ -35,6 +34,12 @@ module FFI
       :MS_UVRASTER,
       :MS_CONTOUR,
       :MS_KERNELDENSITY
+
+    MS_JOIN_CONNECTION_TYPE = enum :MS_DB_XBASE,
+      :MS_DB_CSV,
+      :MS_DB_MYSQL,
+      :MS_DB_ORACLE,
+      :MS_DB_POSTGRES
 
     MS_JOIN_TYPE = enum :MS_JOIN_ONE_TO_ONE,
       :MS_JOIN_ONE_TO_MANY
@@ -117,19 +122,6 @@ module FFI
     #--------------
     # Structs
     #--------------
-    # From libc
-    class TM < FFI::Struct
-      layout :tm_sec, :int,
-        :tm_min, :int,
-        :tm_hour, :int,
-        :tm_mday, :int,
-        :tm_mon, :int,
-        :tm_year, :int,
-        :tm_wday, :int,
-        :tm_yday, :int,
-        :tm_isdst, :int
-    end
-
     class MSRegexT < FFI::Struct
       layout :sys_regex, :pointer
     end
@@ -145,7 +137,7 @@ module FFI
     autoload :ClusterObj,
       File.expand_path('mapserver/cluster_obj', __dir__)
     autoload :ColorObj,
-      File.expand_path('mapserver/color_obj', __dir__)
+      File.expand_path('mapserver/mapsymbol/color_obj', __dir__)
 
     autoload :ExpressionObj,
       File.expand_path('mapserver/expression_obj', __dir__)
@@ -156,25 +148,33 @@ module FFI
       File.expand_path('mapserver/font_set_obj', __dir__)
 
     autoload :GeotransformObj,
-      File.expand_path('mapserver/geotransform_obj', __dir__)
+      File.expand_path('mapserver/mapprimitive/geotransform_obj', __dir__)
+    autoload :GlyphElement,
+      File.expand_path('mapserver/fontcache/glyph_element', __dir__)
+    autoload :GlyphElementKey,
+      File.expand_path('mapserver/fontcache/glyph_element_key', __dir__)
+    autoload :GlyphObj,
+      File.expand_path('mapserver/glpyh_obj', __dir__)
     autoload :GraticuleObj,
       File.expand_path('mapserver/graticule_obj', __dir__)
 
     autoload :HashObj,
-      File.expand_path('mapserver/hash_obj', __dir__)
+      File.expand_path('mapserver/maphash/hash_obj', __dir__)
     autoload :HashTableObj,
-      File.expand_path('mapserver/hash_table_obj', __dir__)
+      File.expand_path('mapserver/maphash/hash_table_obj', __dir__)
 
     autoload :ImageCacheObj,
-      File.expand_path('mapserver/image_cache_obj', __dir__)
+      File.expand_path('mapserver/mapsymbol/image_cache_obj', __dir__)
     autoload :ImageObj,
       File.expand_path('mapserver/image_obj', __dir__)
     autoload :ItemObj,
-      File.expand_path('mapserver/item_obj', __dir__)
+      File.expand_path('mapserver/mapprimitive/item_obj', __dir__)
 
     autoload :JoinObj,
       File.expand_path('mapserver/join_obj', __dir__)
 
+    autoload :LabelBounds,
+      File.expand_path('mapserver/label_bounds', __dir__)
     autoload :LabelCacheObj,
       File.expand_path('mapserver/label_cache_obj', __dir__)
     autoload :LabelCacheMemberObj,
@@ -194,7 +194,7 @@ module FFI
     autoload :LegendObj,
       File.expand_path('mapserver/legend_obj', __dir__)
     autoload :LineObj,
-      File.expand_path('mapserver/line_obj', __dir__)
+      File.expand_path('mapserver/mapprimitive/line_obj', __dir__)
 
     autoload :MapObj,
       File.expand_path('mapserver/map_obj', __dir__)
@@ -207,11 +207,11 @@ module FFI
       File.expand_path('mapserver/original_scale_token_strings', __dir__)
 
     autoload :PaletteArrayObj,
-      File.expand_path('mapserver/palette_array_obj', __dir__)
+      File.expand_path('mapserver/mapsymbol/palette_array_obj', __dir__)
     autoload :PaletteObj,
       File.expand_path('mapserver/palette_obj', __dir__)
     autoload :PointObj,
-      File.expand_path('mapserver/point_obj', __dir__)
+      File.expand_path('mapserver/mapprimitive/point_obj', __dir__)
     autoload :ProjectionObj,
       File.expand_path('mapserver/projection_obj', __dir__)
 
@@ -221,15 +221,15 @@ module FFI
       File.expand_path('mapserver/query_obj', __dir__)
 
     autoload :RGBAArrayObj,
-      File.expand_path('mapserver/rgba_array_obj', __dir__)
+      File.expand_path('mapserver/mapsymbol/rgba_array_obj', __dir__)
     autoload :RGBAPixel,
-      File.expand_path('mapserver/rgba_pixel', __dir__)
+      File.expand_path('mapserver/mapsymbol/rgba_pixel', __dir__)
     autoload :RGBPixel,
-      File.expand_path('mapserver/rgb_pixel', __dir__)
+      File.expand_path('mapserver/mapsymbol/rgb_pixel', __dir__)
     autoload :RasterBufferObj,
-      File.expand_path('mapserver/raster_buffer_obj', __dir__)
+      File.expand_path('mapserver/mapsymbol/raster_buffer_obj', __dir__)
     autoload :RectObj,
-      File.expand_path('mapserver/rect_obj', __dir__)
+      File.expand_path('mapserver/mapprimitive/rect_obj', __dir__)
     autoload :ReferenceMapObj,
       File.expand_path('mapserver/reference_map_obj', __dir__)
     autoload :RendererVTableObj,
@@ -246,18 +246,22 @@ module FFI
     autoload :ScalebarObj,
       File.expand_path('mapserver/scalebar_obj', __dir__)
     autoload :ShapeObj,
-      File.expand_path('mapserver/shape_obj', __dir__)
+      File.expand_path('mapserver/mapprimitive/shape_obj', __dir__)
     autoload :SortByClause,
-      File.expand_path('mapserver/sort_by_properties', __dir__)
+      File.expand_path('mapserver/sort_by_clause', __dir__)
     autoload :SortByProperties,
       File.expand_path('mapserver/sort_by_properties', __dir__)
     autoload :StyleObj,
       File.expand_path('mapserver/style_obj', __dir__)
     autoload :SymbolObj,
-      File.expand_path('mapserver/symbol_obj', __dir__)
+      File.expand_path('mapserver/mapsymbol/symbol_obj', __dir__)
     autoload :SymbolSetObj,
       File.expand_path('mapserver/symbol_set_obj', __dir__)
 
+    autoload :TextPathObj,
+      File.expand_path('mapserver/text_path_obj', __dir__)
+    autoload :TextSymbolObj,
+      File.expand_path('mapserver/text_symbol_obj', __dir__)
     autoload :TileCacheObj,
       File.expand_path('mapserver/tile_cache_obj', __dir__)
     autoload :TokenListNodeObj,
@@ -266,9 +270,77 @@ module FFI
       File.expand_path('mapserver/token_value_obj', __dir__)
 
     autoload :VectorObj,
-      File.expand_path('mapserver/vector_obj', __dir__)
+      File.expand_path('mapserver/mapprimitive/vector_obj', __dir__)
 
     autoload :WebObj,
       File.expand_path('mapserver/web_obj', __dir__)
+
+    #-------
+    # Functions
+    #-------
+    attach_function :msSaveImage, [:pointer, :pointer, :string], :int
+    attach_function :msFreeImage, [:pointer], :void
+    attach_function :msSetup, [], :int
+    attach_function :msCleanup, [:int], :void
+    attach_function :msLoadMapFromString, [:string, :string], MapObj.ptr
+
+    attach_function :initJoin, [JoinObj.ptr], :void
+    attach_function :initSymbol, [SymbolObj.ptr], :void
+    attach_function :initMap, [MapObj.ptr], :int
+    #attach_function :msGrowMaplayers, [:pointer], LayerObj
+    attach_function :initLayer, [LayerObj.ptr, MapObj.ptr], :int
+    attach_function :freeLayer, [LayerObj.ptr], :int
+    #attach_function :msGrowLayerScaletokens, [:pointer], :pointer
+    #attach_function :initScaleToken, [:pointer], :int
+    attach_function :initClass, [ClassObj.ptr], :int
+    attach_function :freeClass, [ClassObj.ptr], :int
+    attach_function :msGrowClassStyles, [ClassObj.ptr], StyleObj.ptr
+    attach_function :msGrowClassLabels, [ClassObj.ptr], LabelObj.ptr
+    attach_function :msGrowLabelStyles, [LabelObj.ptr], StyleObj.ptr
+    attach_function :msGrowLeaderStyles, [LabelLeaderObj.ptr], StyleObj.ptr
+    attach_function :msMaybeAllocateClassStyle, [ClassObj.ptr, :int], :int
+    attach_function :initLabel, [LabelObj.ptr], :void
+    attach_function :freeLabel, [LabelObj.ptr], :int
+    #attach_function :freeLabelLeader, [LabelObj.ptr], :int
+    attach_function :resetClassStyle, [ClassObj.ptr], :void
+    attach_function :initStyle, [StyleObj.ptr], :int
+    attach_function :freeStyle, [StyleObj.ptr], :int
+    attach_function :initReferenceMap, [ReferenceMapObj.ptr], :void
+    attach_function :initScalebar, [ScalebarObj.ptr], :void
+    attach_function :initGrid, [GraticuleObj.ptr], :void
+    attach_function :initWeb, [WebObj.ptr], :void
+    attach_function :initResultCache, [ResultCacheObj.ptr], :void
+
+    attach_function :insertFeatureList,
+      [FeatureListNodeObj.ptr, ShapeObj.ptr],
+      FeatureListNodeObj.ptr
+
+    attach_function :freeFeatureList, [FeatureListNodeObj.ptr], :void
+
+    attach_function :loadExpressionString, [ExpressionObj.ptr, :string], :int
+    attach_function :msLoadExpressionString, [ExpressionObj.ptr, :string], :int
+    attach_function :msGetExpressionString, [ExpressionObj.ptr], :string
+    #attach_function :msInitExpression, [ExpressionObj.ptr], :void
+    #attach_function :msFreeExpressionTokens, [ExpressionObj.ptr], :void
+    #attach_function :msFreeExpression, [ExpressionObj.ptr], :void
+
+    attach_function :msApplySubstitutions,
+      [MapObj.ptr, :pointer, :pointer, :int],
+      :void
+    attach_function :msApplyDefaultSubstitutions, [MapObj.ptr], :void
+
+    #attach_function :getClassIndex, [LayerObj.ptr, :string], :int
+
+    # for mapLabel
+    attach_function :intersectLabelPolygons,
+      [LineObj.ptr, RectObj.ptr, LineObj.ptr, RectObj.ptr],
+      :int
+    attach_function :intersectTextSymbol,
+      [TextSymbolObj.ptr, :pointer],
+     :int
+
+    attach_function :get_metrics,
+      [PointObj.ptr, :int, TextPathObj.ptr, :int, :int, :double, :int, :pointer], :int
+
   end
 end

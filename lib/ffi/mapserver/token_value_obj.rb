@@ -6,7 +6,7 @@ module FFI
       layout :dbl_val, :double,
         :int_val, :int,
         :str_val, :string,
-        :tm_val, TM,
+        :tm_val, FFI::LibC::TM,
         :shp_val, ShapeObj.ptr,
         :bind_val, AttributeBindingObj
     end

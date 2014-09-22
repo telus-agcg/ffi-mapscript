@@ -25,7 +25,7 @@ module FFI
         :i_label_type, :int,
         :extend, RectObj,
         :bounding_lines, LineObj.ptr,
-        :bounding_points, PointObj,ptr,
+        :bounding_points, PointObj.ptr,
         :label_format, :string
     end
   end
