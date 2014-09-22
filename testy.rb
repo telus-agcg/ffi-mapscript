@@ -6,7 +6,7 @@ path = '/Users/sloveless/Desktop/geotiffs/NDVI20000701183.tif'
 map = Mapserver::Map.new(path)
 
 request = Mapserver::CGIRequest.new
-%w(REQUEST_METHOD QUERY_STRING HTTP_COOKIE).each { |var| ENV[var] = env[var] }
+#%w(REQUEST_METHOD QUERY_STRING HTTP_COOKIE).each { |var| ENV[var] = env[var] }
 request.load_params
 FFI::Mapserver.msIO_installStdoutToBuffer
 response = map.ows_dispatch(request.c_pointer)

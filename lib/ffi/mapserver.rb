@@ -197,7 +197,11 @@ module FFI
     autoload :SymbolObj,
       File.expand_path('mapserver/mapsymbol/symbol_obj', __dir__)
 
+    # msio.h
+    autoload :MSIOContext,
+      File.expand_path('mapserver/msio/ms_io_context', __dir__)
 
+    # mapserver.h
     autoload :AttributeBindingObj,
       File.expand_path('mapserver/attribute_binding_obj', __dir__)
 

@@ -23,7 +23,7 @@ module FFI
         :geotransform, GeotransformObj,
         :saved_extend, RectObj,
         :units, MS_UNITS,
-        :scaled_enom, :double,
+        :scale_denom, :double,
         :resolution, :double,
         :default_resolution, :double,
         :shape_path, :string,
@@ -32,7 +32,7 @@ module FFI
         :image_color, ColorObj,
         :num_output_formats, :int,
         :output_format_list, :pointer,   # an array of OutputFormatObjs
-        :output_forman, OutputFormatObj.ptr,
+        :output_format, OutputFormatObj.ptr,
         :image_type, :string,
         :projection, ProjectionObj,
         :lat_lon, ProjectionObj,
