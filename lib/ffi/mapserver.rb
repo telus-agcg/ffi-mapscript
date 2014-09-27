@@ -198,6 +198,8 @@ module FFI
       File.expand_path('mapserver/mapsymbol/symbol_obj', __dir__)
 
     # msio.h
+    autoload :MSIOBuffer,
+      File.expand_path('mapserver/msio/ms_io_buffer', __dir__)
     autoload :MSIOContext,
       File.expand_path('mapserver/msio/ms_io_context', __dir__)
 
