@@ -5,6 +5,9 @@ module FFI
     extend FFI::Library
     ffi_lib 'mapserver'
 
+    attach_function :msIO_getHandler, [:string], MSIOContext.ptr
+    #attach_function :msIO_getHandler, [:string], :pointer
+
     attach_function :msIO_resetHandlers, [], :void
     attach_function :msIO_installStdoutToBuffer, [], :void
     attach_function :msIO_installStdinFromBuffer, [], :void
