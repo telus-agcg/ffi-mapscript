@@ -1,2 +1,2 @@
-ffi-mapserver
+ffi-mapscript
 =============
