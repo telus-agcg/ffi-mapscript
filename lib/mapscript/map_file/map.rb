@@ -1,4 +1,4 @@
-require_relative 'map_file_objects'
+require_relative '../map_file_objects'
 
 module Mapscript
   module MapFileSections
