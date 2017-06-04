@@ -1,5 +1,4 @@
 require 'forwardable'
-require_relative '../ffi-mapscript'
 
 module Mapscript
   class MapObj

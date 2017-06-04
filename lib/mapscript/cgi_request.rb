@@ -1,5 +1,3 @@
-require_relative '../ffi-mapscript'
-
 module Mapscript
   class CGIRequest
     def initialize
