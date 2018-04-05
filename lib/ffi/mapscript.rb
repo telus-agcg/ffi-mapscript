@@ -135,6 +135,13 @@ module FFI
       layout :sys_regex, :pointer
     end
 
+    # Used for getBytes. Defined in mapscript/mapscript.i.
+    class GDBuffer < FFI::Struct
+      layout :data, :pointer,
+        :size, :pointer,
+        :owns_data, :bool
+    end
+
     # cgiutil
     autoload :CGIRequestObj,
       File.expand_path('mapscript/cgiutil/cgi_request_obj', __dir__)
@@ -319,6 +326,7 @@ module FFI
     # Functions
     #-------
     attach_function :msSaveImage, [:pointer, :pointer, :string], :int
+    attach_function :msSaveImageBuffer, [ImageObj.ptr, :pointer, OutputFormatObj.ptr], :pointer
     attach_function :msFreeImage, [:pointer], :void
     attach_function :msSetup, [], :int
     attach_function :msCleanup, [:int], :void
@@ -352,7 +360,8 @@ module FFI
     attach_function :initResultCache, [ResultCacheObj.ptr], :void
 
     attach_function :insertFeatureList,
-      [FeatureListNodeObj.ptr, ShapeObj.ptr],
+      # [FeatureListNodeObj.ptr, ShapeObj.ptr],
+      %i[pointer pointer],
       FeatureListNodeObj.ptr
 
     attach_function :freeFeatureList, [FeatureListNodeObj.ptr], :void
@@ -389,6 +398,8 @@ module FFI
     #---------------------------------------------------------------------------
     # Main API functions
     #---------------------------------------------------------------------------
+    attach_function :msLayerGetExtent, [LayerObj.ptr, RectObj.ptr], :int
+
     #~~~~~
     # mapobject.c
     #~~~~~
@@ -442,6 +453,18 @@ module FFI
     attach_function :msShapeFromWKT, [:string], ShapeObj.ptr
     attach_function :msGEOSShapeFromWKT, [:string], ShapeObj.ptr
     attach_function :msOGRShapeFromWKT, [:string], ShapeObj.ptr
+
+    #~~~~
+    # maperror.h
+    #~~~~
+    MS_MISCERR = 12
+
+    attach_function :msSetError, %i[int string string], :void
+
+    #~~~~
+    # mapdraw prototypes
+    #~~~~
+    attach_function :msDrawMap, [MapObj.ptr, :bool], ImageObj
   end
 end
 

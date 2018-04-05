@@ -22,7 +22,7 @@ module FFI
         :scale_tokens, ScaleTokenObj.ptr,
         :num_scale_tokens, :int,
         :original_scale_tokens, OriginalScaleTokenStrings.ptr,
-        :data, :string,
+        :data, :pointer,
         :type, MS_LAYER_TYPE,
         :tolerance, :double,
         :tolerance_units, :int,
